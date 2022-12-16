@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
+    <style>
+        #na{
+    position:relative;
+    left: 450px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+  }
+      #map {
+        left: 100px;
+        position: relative;
+        right: 0;
+        top: 25px;
+      }
+      #title{
+        position: relative;
+        left: 145px;
+        top:13px;
+      }
+      #table1{
+        position: relative;
+        bottom: 290px;
+        left: 100px;
+      }
+      #this{
+        position: relative;
+        left:900px; 
+        bottom:300px;
+        
+      }
+      #title2{
+        position: relative;
+        left:170px;
+        top: 100px;
+      }
+      #here{
+        size: 50px;
+        position: relative;
+        left: 920px; 
+        bottom: 280px;
+      
+      }
+      #sources{
+        position: relative;
+        top: -300px;
+        left:55px;
+      }
+      #na{
+        font-family:Arial, Helvetica, sans-serif;
+      }
+    
+     
+    </style>
+  </head>
+  <body>
+    <div align="center" id="na" style="width: 500px; height:75px; background-color: #b2cae1"><br> Higher bed elevation (close to 1) portions of the "Spruce 1" mesh would have burned more severly in the 2017 lolo peak fire. </div>
+    <text id="title">Lolo Peak Fire Burn Index. (The blue box outline corresponds to the blue box outline of the mesh to the right)</text>
+    <text id="title2">"Spruce 1" 2d mesh showing bed elevation in a section of lolo forest</text>
+
+    <div id="map" style="height: 400px; width:50% "></div>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/georaster"></script>
+    <script src = "json.js"></script>
+    <script src = "myfile.js"></script>
+    <script src="https://unpkg.com/georaster-layer-for-leaflet"></script>
+    <script>
+      // initalize leaflet map
+
+      
+
+      var url_to_geotiff_file = "test.tif";
+
+      fetch(url_to_geotiff_file)
+        .then(response => response.arrayBuffer())
+        .then(arrayBuffer => {
+          parseGeoraster(arrayBuffer).then(georaster => {
+            console.log("georaster:", georaster);
+
+            /*
+                GeoRasterLayer is an extension of GridLayer,
+                which means can use GridLayer options like opacity.
+                Just make sure to include the georaster option!
+                http://leafletjs.com/reference-1.2.0.html#gridlayer
+            */
+            var layer = new GeoRasterLayer({
+                georaster: georaster,
+                opacity: 0.4
+            });
+            layer.addTo(map);
+
+            
+            
+
+        });
+      });
+
+    </script>
+
+    <img id =this src="YES.png" />
+    <img id= here src="Screenshot_20221215_024542.png"/>
+    <table border="1" id="table1" bgcolor:"skyblue" opacity: .3>
+      
+      <th bgcolor="red">High intensity</th> 
+      </tr> <tr>
+      <td bgcolor="yellow">Moderate intensity</td>
+    
+      <tr>
+      <td bgcolor="aqua">Low intensity</td> </td> <tr>
+      <td bgcolor="green">Unburned to Low</td> </td>
+      </tr>
+       </table>
+       <div align="center" id="sources"> Data Sources: https://www.mtbs.gov/viewer/?region=conus <br>
+        https://cloud.pix4d.com/dataset/537853/model
+       </div>
+
+  </body>
+</html>
